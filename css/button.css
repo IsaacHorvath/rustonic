@@ -1,0 +1,19 @@
+.button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.button:focus {
+  background-color: #e4ba4e;
+}
+.button:hover {
+  background-color: #e4ba4e;
+}
+.button:active {
+  background-color: goldenrod;
+}
+
+.button.album_button {
+  justify-content: end;
+}

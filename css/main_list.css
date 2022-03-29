@@ -1,0 +1,12 @@
+.main_list{
+  background-color: #f2dca6;
+  padding-left: 20px;
+  padding-top: 10px;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.song{
+    
+}

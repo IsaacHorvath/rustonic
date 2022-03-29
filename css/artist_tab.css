@@ -1,0 +1,37 @@
+.artist_tab{
+  height: 95%;
+  width: 10%;
+  margin-top: 5%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: goldenrod;
+  overflow-x: hidden;
+  direction: rtl;
+}
+.artist_tab>div {
+  direction: ltr;
+}
+
+.artist{
+  width: 100%;
+  padding: 5px 0px 0px 20px;
+}
+
+.artist_selected{
+  width: 100%;
+  background-color: #e4ba4e;
+  padding: 10px 0px;
+  display: flex;
+  flex-flow: row;
+}
+
+.aname{
+  position: relative;
+  left: 10px;
+}
+
+.aname_selected{
+  position: relative;
+  left: 20px;
+}

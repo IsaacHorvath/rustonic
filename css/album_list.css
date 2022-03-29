@@ -1,0 +1,32 @@
+.album_list{
+  background-color: #e4ba4e;
+  padding-left: 10px;
+  overflow-x: scroll;
+}
+
+.album {
+  background-color: #ebcb7a;
+  float: left;
+  border-radius: 5%;
+  padding: 10px;
+  margin: 10px 10px 5px 10px;
+}
+
+.album_selected {
+  background-color: #f2dca6;
+  float: left;
+  border-radius: 5%;
+  padding: 10px;
+  margin: 10px 10px 5px 10px;
+}
+
+.album_title{
+  padding: 10px;
+  font-size: 16pt;
+  align-items: center;
+  display: flex;
+}
+
+.gap{
+  flex-grow: 1; 
+}

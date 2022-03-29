@@ -1,0 +1,27 @@
+body {
+  background-color: #b1871b;
+  margin: 0 0 0 0;
+}
+
+h1 {
+  text-align: center;
+  padding-top: 0px;
+  line-height: 0px;
+}
+
+.title{
+  padding-top: 10px;
+  height: 5%;
+  width: 100%;
+  position: fixed;
+  padding-top: 10px;
+}
+
+.main_body{
+  height: 95%;
+  width: 90%;
+  margin-top: 5%;
+  margin-left: 10%;
+  position: fixed;
+  padding: 0px 0px 0px 0px;
+}
