@@ -247,8 +247,11 @@ dependencies = [
 
 [[package]]
 name = "rustonic"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
+ "gloo-utils",
+ "wasm-bindgen",
+ "web-sys",
  "yew",
  "yew-agent",
 ]

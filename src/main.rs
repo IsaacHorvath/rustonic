@@ -1,15 +1,10 @@
 use yew::prelude::*;
-use std::ops::Deref;
-use std::collections::HashMap;
 
+mod data_types;
+mod event_bus;
 mod components;
 use crate::components::*;
 
-mod data_types;
-use crate::data_types::*;
-
-mod event_bus;
-use crate::event_bus::*;
 
 #[function_component(App)]
 fn app() -> Html {
@@ -20,6 +15,7 @@ fn app() -> Html {
         <div class="main_body">
             <AlbumList/>
             <MainList/>
+            <Queue/>
         </div>
         <ArtistTab/>
     </>

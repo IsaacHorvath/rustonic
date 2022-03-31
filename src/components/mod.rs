@@ -7,6 +7,9 @@ pub use album_list::AlbumList;
 pub mod main_list;
 pub use main_list::MainList;
 
+pub mod queue;
+pub use queue::Queue;
+
 pub mod button;
 pub use button::Button;
 

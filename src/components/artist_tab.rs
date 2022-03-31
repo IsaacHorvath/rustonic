@@ -1,34 +1,33 @@
 use yew::prelude::*;
-use yew_agent::{Dispatched, Dispatcher};
-use crate::data_types::Artist;
-use crate::event_bus::{EventBus, Request};
+use yew_agent::{Bridge, Bridged};
+use crate::event_bus::{EventBus, Request, Response};
 use std::collections::HashMap;
 
-pub enum ArtistMsg {
+/*pub enum ArtistTabMsg {
     Clicked(Option<usize>),
-}
+}*/
 
 pub struct ArtistTab {
-    artists: HashMap<usize, Artist>,
+    artists: HashMap<usize, String>,
     selected: Option<usize>,
-    event_bus: Dispatcher<EventBus>,
+    event_bus: Box<dyn Bridge<EventBus>>,
 }
 
 impl Component for ArtistTab {
-    type Message = ArtistMsg;
+    type Message = Response;
     type Properties = ();
 
-    fn create(_ctx: &Context<Self>) -> Self {
+    fn create(ctx: &Context<Self>) -> Self {
         Self {
-            artists: demo_artists(),
+            artists: HashMap::new(),
             selected: None,
-            event_bus: EventBus::dispatcher(),
+            event_bus: EventBus::bridge(ctx.link().callback(|r| r)),
         }
     }
     
     fn view(&self, ctx: &Context<Self>) -> Html {
-        
-        let artist_html: Html = self.artists.iter().map(|(id, artist)|{
+        // Collect html for each artist in the tab
+        let artist_html: Html = self.artists.iter().map(|(id, name)| {
             let id = id.clone();
             
             let (c, nc) = match self.selected {
@@ -38,18 +37,18 @@ impl Component for ArtistTab {
             
             let onclick = ctx.link().callback(move |e: MouseEvent| {
                 e.stop_propagation();
-                ArtistMsg::Clicked(Some(id))
+                Response::Clicked(Some(id))
             });
             
             html! {
                 <div class={c} {onclick}>
-                    <div class={nc}>{format!("{}", artist.name.clone())}</div>
+                    <div class={nc}>{format!("{}", name.clone())}</div>
                 </div>
             }
         }).collect();
         
-        // If the tab is clicked, but not an artist
-        let onclick = ctx.link().callback(|_| {ArtistMsg::Clicked(None)});
+        // If the tab is clicked, but it didn't hit an artist
+        let onclick = ctx.link().callback(|_| {Response::Clicked(None)});
         
         html! {
             <div class="artist_tab" {onclick}>
@@ -60,18 +59,26 @@ impl Component for ArtistTab {
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            ArtistMsg::Clicked(selected) => {
+            Response::Clicked(selected) => {
                 self.selected = selected;
-                
-                // Send message to album list containing a vec of ids
-                let albums = match selected {
-                    Some(i) => self.artists.get(&i).unwrap().get_albums(),
-                    None => vec![]
-                };
-                self.event_bus.send(Request::EventBusMsg(albums));
-                
+                self.event_bus.send(Request::FetchAlbums(selected));
                 true
             }
+            Response::ShowArtists(artists) => {
+                self.artists = match artists {
+                    Some(a) => a,
+                    None => HashMap::new()
+                };
+                true
+            }
+            _ => false
+        }
+    }
+    
+    fn rendered(&mut self, _ctx: &Context<Self>, first_render: bool) {
+        // If it's our first render, fetch the artist list
+        if first_render {
+            self.event_bus.send(Request::FetchArtists);
         }
     }
 }
@@ -88,28 +95,3 @@ impl Component for ArtistTab {
 
 
 
-fn demo_artists() -> HashMap<usize, Artist> {
-    let mut artists = HashMap::new();
-    artists.insert(0, Artist {
-        id: 0,
-        name: "Sufjan Stevens".to_string(),
-        albums: vec![0,1]
-    });
-    artists.insert(1, Artist {
-        id: 1,
-        name: "Merzbow".to_string(),
-        albums: vec![2]
-    });
-    artists.insert(2, Artist {
-        id: 2,
-        name: "Holly Herndon".to_string(),
-        albums: vec![3]
-    });
-    artists.insert(3, Artist {
-        id: 3,
-        name: "Feist".to_string(),
-        albums: vec![4]
-    });
-    
-    artists
-}
