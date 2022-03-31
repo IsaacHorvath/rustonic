@@ -22,7 +22,8 @@ pub enum Response {
     MainListAdd(usize),
     AlbumListAdd(usize),
     QueueSongs(Vec<(usize, Song)>),
-    QueuePlay,
+    QueuePlayPause,
+    QueueDelete(usize),
 }
 
 pub struct EventBus {

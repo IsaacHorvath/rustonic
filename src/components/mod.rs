@@ -10,6 +10,9 @@ pub use main_list::MainList;
 pub mod queue;
 pub use queue::Queue;
 
+pub mod player;
+pub use player::Player;
+
 pub mod button;
 pub use button::Button;
 

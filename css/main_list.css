@@ -1,8 +1,10 @@
 .main_list{
   background-color: #eed490;
+  margin: 0;
   padding-left: 20px;
   padding-top: 10px;
+  padding-bottom: 10px;
   display: flex;
   flex-flow: column;
-  height: 100%;
+  flex-grow: 1;
 }

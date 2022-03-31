@@ -10,15 +10,15 @@ use crate::components::*;
 fn app() -> Html {
     
     html! {
-    <>
-        <div class="title"><h1>{ "Rustonic" }</h1></div>
-        <div class="main_body">
-            <AlbumList/>
-            <MainList/>
-            <Queue/>
-        </div>
-        <ArtistTab/>
-    </>
+        <>
+            <div class="title"><h1>{ "Rustonic" }</h1></div>
+            <div class="main_body">
+                <AlbumList/>
+                <MainList/>
+                <Queue/>
+            </div>
+            <ArtistTab/>
+        </>
     }  
 }
 

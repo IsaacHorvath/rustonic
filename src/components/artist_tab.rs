@@ -60,6 +60,9 @@ impl Component for ArtistTab {
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             Response::Clicked(selected) => {
+                if selected == None {
+                    self.event_bus.send(Request::FetchSongs(None));
+                }
                 self.selected = selected;
                 self.event_bus.send(Request::FetchAlbums(selected));
                 true
