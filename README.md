@@ -6,13 +6,13 @@ Front-end only for now. Work in progress.
 
 ### Try It Out
 
-Make sure you have `trunk` installed:
+Make sure you have `trunk` installed:  
 `cargo install --locked trunk`
 
-Clone this repository:
+Clone this repository:  
 `git clone https://github.com/IsaacHorvath/rustonic.git`
 
-Launch the server and open in your browser:
+Launch the server and open in your browser:  
 `trunk serve --open`
 
 You won't be able to play any audio at this point - just browse a demo library and add songs to a dummy queue.
@@ -26,10 +26,10 @@ You won't be able to play any audio at this point - just browse a demo library a
 
 ### Todo:
 
-[ ] Implement play queue
-[ ] Rework CSS with flexboxes
-[ ] Implement subsonic REST API
-[ ] Fix silly default colours :P
-[ ] Implement the actual player
-[ ] Proper caching
+[ ] Implement play queue  
+[ ] Rework CSS with flexboxes  
+[ ] Implement subsonic REST API  
+[ ] Fix silly default colours :P  
+[ ] Implement the actual player  
+[ ] Proper caching  
 [ ] Build a backend?
