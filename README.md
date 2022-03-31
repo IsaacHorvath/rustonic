@@ -2,21 +2,34 @@
 
 A simple web app for playing music from a server via the Subsonic API.
 
-Front-end only for now.
+Front-end only for now. Work in progress.
+
+### Try It Out
+
+Make sure you have `trunk` installed:
+`cargo install --locked trunk`
+
+Clone this repository:
+`git clone https://github.com/IsaacHorvath/rustonic.git`
+
+Launch the server and open in your browser:
+`trunk serve --open`
+
+You won't be able to play any audio at this point - just browse a demo library and add songs to a dummy queue.
 
 ### Design Notes
 
-- The main component is basically just a container
-- The artist tab component holds a HashMap of ids, artists
-- The album tab component holds a HashMap of ids, albums
-- The artist tab sends an album list to the artists via an agent called EventBus
+- Built entirely in Rust, HTML, and CSS
+- Uses [Yew](https://yew.rs/), [Trunk](https://trunkrs.dev/), and a bit of [wasm-bindgen](https://rustwasm.github.io/docs/wasm-bindgen/) so far
+- Central event bus (Yew Agent) caches albums, artists, and songs
+- Independent Components display this data on an artist tab, and album/song lists
 
 ### Todo:
 
-[ ] Fix main list
-[ ] Fully move to HashMaps and id numbers
-[ ] Add play queue component
-[ ] Implement subsonic API on frontend
+[ ] Implement play queue
+[ ] Rework CSS with flexboxes
+[ ] Implement subsonic REST API
+[ ] Fix silly default colours :P
 [ ] Implement the actual player
 [ ] Proper caching
-[ ] Build a backend
+[ ] Build a backend?
