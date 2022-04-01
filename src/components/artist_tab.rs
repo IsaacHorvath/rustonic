@@ -51,9 +51,9 @@ impl Component for ArtistTab {
         let onclick = ctx.link().callback(|_| {Response::Clicked(None)});
         
         html! {
-            <div class="artist_tab" {onclick}>
+            <nav {onclick}>
                 {artist_html}
-            </div>
+            </nav>
         }
     }
 

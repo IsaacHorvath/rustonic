@@ -11,12 +11,12 @@ fn app() -> Html {
     
     html! {
         <>
-            <div class="title"><h1>{ "Rustonic" }</h1></div>
-            <div class="main_body">
+            <header><h1>{ "Rustonic" }</h1></header>
+            <main>
                 <AlbumList/>
                 <MainList/>
                 <Queue/>
-            </div>
+            </main>
             <ArtistTab/>
         </>
     }  
