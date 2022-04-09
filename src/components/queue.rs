@@ -1,17 +1,14 @@
 use yew::prelude::*;
 use yew_agent::{Bridge, Bridged};
-use web_sys::{HtmlMediaElement};
-use wasm_bindgen::JsCast;
-use gloo_utils::document;
 use crate::data_types::Song;
 use crate::components::{Button, Player};
-use crate::event_bus::{EventBus, Response};
+use crate::event_bus::{EventBus, Response, Request};
 
 pub struct Queue {
     //TODO: wrap current songs in option
     current: Vec<(usize, Song)>,
     selected: Option<usize>,
-    _event: Box<dyn Bridge<EventBus>>,
+    event_bus: Box<dyn Bridge<EventBus>>,
 }
 
 impl Component for Queue {
@@ -22,7 +19,7 @@ impl Component for Queue {
         Self {
             current: vec![],
             selected: None,
-            _event: EventBus::bridge(ctx.link().callback(|r| r)),
+            event_bus: EventBus::bridge(ctx.link().callback(|r| r)),
         }
     }
     
@@ -50,13 +47,9 @@ impl Component for Queue {
         }).collect();
         
         let songtitle = self.current[0].1.title.clone();
+        let path = self.current[0].1.path.clone();
         let albumtitle = self.current[0].1.album_title.clone();
         let artistname = self.current[0].1.artist_name.clone();
-        
-        let playpause = ctx.link().callback(|e: MouseEvent| {
-            e.stop_propagation();
-            Response::QueuePlayPause
-        });
         
         let deleteplaying = ctx.link().callback(|e: MouseEvent| {
             e.stop_propagation();
@@ -65,7 +58,7 @@ impl Component for Queue {
         
         html! {
             <span class="queue">
-                <Player {songtitle} {albumtitle} {artistname} {playpause} {deleteplaying}/>
+                <Player {songtitle} {path} {albumtitle} {artistname} {deleteplaying}/>
                 {songs}
             </span>
         }
@@ -82,32 +75,14 @@ impl Component for Queue {
                 self.current.append(&mut s);
                 true
             },
-            Response::QueuePlayPause => {
-                
-                let audio: HtmlMediaElement = document().get_element_by_id("player").unwrap().dyn_into::<HtmlMediaElement>().unwrap();
-                let button = document().get_element_by_id("playpause").unwrap();
-                
-                if audio.paused() {
-                    button.set_inner_html("⏸");
-                    audio.play().unwrap();
-                }
-                else {
-                    button.set_inner_html("▶");
-                    audio.pause().unwrap();
-                }
-                
-                true
-            },
             Response::QueueDelete(song) => {
                 self.current.remove(song);
                 
-                let audio: HtmlMediaElement = document().get_element_by_id("player").unwrap().dyn_into::<HtmlMediaElement>().unwrap();
-                let button = document().get_element_by_id("playpause").unwrap();
-                
-                //TODO: Move to next song
-                if !audio.paused() && song == 0 {
-                    button.set_inner_html("▶");
-                    audio.pause().unwrap();
+                if song == 0 {
+                    self.event_bus.send(Request::PlayPause);
+                    if self.current.len() > 0 {
+                        self.event_bus.send(Request::PlayerLoad(self.current[0].1.path.clone()));
+                    }
                 }
                 
                 true

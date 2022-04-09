@@ -3,6 +3,7 @@
 #[derive(Debug, Clone, PartialEq)]
 pub struct Song {
     pub title: String,
+    pub path: String,
     pub album_id: usize,
     pub album_title: String,
     pub artist_id: usize,

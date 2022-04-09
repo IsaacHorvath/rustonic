@@ -30,6 +30,7 @@ You won't be able to play any audio at this point - just browse a demo library a
 [ ] Rework CSS with flexboxes  
 [ ] Implement subsonic REST API  
 [ ] Fix silly default colours :P  
-[ ] Implement the actual player  
+[x] Implement the actual player  
+[ ] `unwrap()` search and fix  
 [ ] Proper caching  
-[ ] Build a backend?
+[ ] Build a backend?  

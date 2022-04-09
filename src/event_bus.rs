@@ -11,6 +11,8 @@ pub enum Request {
     FetchSongs(Option<usize>),
     QueueSongs(Vec<usize>),
     QueueAlbum(usize),
+    PlayPause,
+    PlayerLoad(String),
 }
 
 #[derive(Debug, Clone)]
@@ -22,8 +24,9 @@ pub enum Response {
     MainListAdd(usize),
     AlbumListAdd(usize),
     QueueSongs(Vec<(usize, Song)>),
-    QueuePlayPause,
     QueueDelete(usize),
+    PlayerPlayPause,
+    PlayerLoad(String),
 }
 
 pub struct EventBus {
@@ -91,11 +94,13 @@ impl Agent for EventBus {
             Request::QueueSongs(songs) => {
                 let songs: Vec<(usize, Song)> = songs.iter().map(|id| (*id, self.songs.get(id).unwrap().clone())).collect();
                 Response::QueueSongs(songs)
-            }
+            },
             Request::QueueAlbum(album_id) => {
                 let songs: Vec<(usize, Song)> = self.albums.get(&album_id).unwrap().get_songs().iter().map(|id| (*id, self.songs.get(id).unwrap().clone())).collect();
                 Response::QueueSongs(songs)
-            }
+            },
+            Request::PlayPause => Response::PlayerPlayPause,
+            Request::PlayerLoad(path) => Response::PlayerLoad(path)
         };
         
         for sub in self.subscribers.iter() {
@@ -171,6 +176,7 @@ fn demo_songs() -> HashMap<usize, Song> {
     let mut songs = HashMap::new();
     songs.insert(0, Song {
                         title: "Concerning the UFO Sighting Near Highland, Illinois".to_string(),
+                        path: "demoaudio/suf/ill/01.mp3".to_string(),
                         album_id: 0,
                         album_title: "Illinois".to_string(),
                         artist_id: 0,
@@ -178,6 +184,7 @@ fn demo_songs() -> HashMap<usize, Song> {
                     });
     songs.insert(1, Song {
                         title: "The Black Hawk War".to_string(),
+                        path: "demoaudio/suf/ill/02.mp3".to_string(),
                         album_id: 0,
                         album_title: "Illinois".to_string(),
                         artist_id: 0,
@@ -185,6 +192,7 @@ fn demo_songs() -> HashMap<usize, Song> {
                     });
     songs.insert(2, Song {
                         title: "Come On, Feel the Illinoise".to_string(),
+                        path: "demoaudio/suf/ill/03.mp3".to_string(),
                         album_id: 0,
                         album_title: "Illinois".to_string(),
                         artist_id: 0,
@@ -192,6 +200,7 @@ fn demo_songs() -> HashMap<usize, Song> {
                     });
     songs.insert(3, Song {
                         title: "Futile Devices".to_string(),
+                        path: "demoaudio/suf/adz/01 Futile Devices.mp3".to_string(),
                         album_id: 0,
                         album_title: "The Age of Adz".to_string(),
                         artist_id: 0,
@@ -199,6 +208,7 @@ fn demo_songs() -> HashMap<usize, Song> {
                     });
     songs.insert(4, Song {
                         title: "Too Much".to_string(),
+                        path: "demoaudio/suf/adz/02 Too Much.mp3".to_string(),
                         album_id: 0,
                         album_title: "The Age of Adz".to_string(),
                         artist_id: 0,
@@ -206,6 +216,7 @@ fn demo_songs() -> HashMap<usize, Song> {
                     });
     songs.insert(5, Song {
                         title: "The Age of Adz".to_string(),
+                        path: "demoaudio/suf/adz/03 Age of Adz.mp3".to_string(),
                         album_id: 0,
                         album_title: "The Age of Adz".to_string(),
                         artist_id: 0,
@@ -213,6 +224,7 @@ fn demo_songs() -> HashMap<usize, Song> {
                     });
     songs.insert(6, Song {
                         title: "Intro".to_string(),
+                        path: "demoaudio/merzbow/01 - Intro.mp3".to_string(),
                         album_id: 0,
                         album_title: "1930".to_string(),
                         artist_id: 0,
@@ -220,6 +232,7 @@ fn demo_songs() -> HashMap<usize, Song> {
                     });
     songs.insert(7, Song {
                         title: "1930".to_string(),
+                        path: "demoaudio/merzbow/02 - 1930.mp3".to_string(),
                         album_id: 0,
                         album_title: "1930".to_string(),
                         artist_id: 0,
@@ -227,6 +240,7 @@ fn demo_songs() -> HashMap<usize, Song> {
                     });
     songs.insert(8, Song {
                         title: "Munchen".to_string(),
+                        path: "demoaudio/merzbow/03 - Munchen.mp3".to_string(),
                         album_id: 0,
                         album_title: "1930".to_string(),
                         artist_id: 0,
@@ -234,6 +248,7 @@ fn demo_songs() -> HashMap<usize, Song> {
                     });
     songs.insert(9, Song {
                         title: "Interference".to_string(),
+                        path: "demoaudio/herndon/01.mp3".to_string(),
                         album_id: 0,
                         album_title: "Platform".to_string(),
                         artist_id: 0,
@@ -241,6 +256,7 @@ fn demo_songs() -> HashMap<usize, Song> {
                     });
     songs.insert(10, Song {
                         title: "Chorus".to_string(),
+                        path: "demoaudio/herndon/02.mp3".to_string(),
                         album_id: 0,
                         album_title: "Platform".to_string(),
                         artist_id: 0,
@@ -248,6 +264,7 @@ fn demo_songs() -> HashMap<usize, Song> {
                     });
     songs.insert(11, Song {
                         title: "Unequal".to_string(),
+                        path: "demoaudio/herndon/03.mp3".to_string(),
                         album_id: 0,
                         album_title: "Platform".to_string(),
                         artist_id: 0,
@@ -255,6 +272,7 @@ fn demo_songs() -> HashMap<usize, Song> {
                     });
     songs.insert(12, Song {
                         title: "Gatekeeper".to_string(),
+                        path: "demoaudio/feist/01.mp3".to_string(),
                         album_id: 0,
                         album_title: "Let It Die".to_string(),
                         artist_id: 0,
@@ -262,6 +280,7 @@ fn demo_songs() -> HashMap<usize, Song> {
                     });
     songs.insert(13, Song {
                         title: "Mushaboom".to_string(),
+                        path: "demoaudio/feist/02.mp3".to_string(),
                         album_id: 0,
                         album_title: "Let It Die".to_string(),
                         artist_id: 0,
@@ -269,6 +288,7 @@ fn demo_songs() -> HashMap<usize, Song> {
                     });
     songs.insert(14, Song {
                         title: "Let It Die".to_string(),
+                        path: "demoaudio/feist/03.mp3".to_string(),
                         album_id: 0,
                         album_title: "Let It Die".to_string(),
                         artist_id: 0,
